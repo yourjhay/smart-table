@@ -1,0 +1,24 @@
+{
+    "name": "reyjhon/simple-php",
+    "description": "The Simple PHP is lightweight web application framework.",
+    "keywords": ["framework", "simplephp", "simply"],
+    "homepage": "https://gitlab.com/jhayann/simple",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Rey Jhon A. Baquirin",
+            "email": "reyjhonbaquirin@yahoo.com",
+            "role": "Creator"
+        }
+    ],
+    "require": {
+        "simplyphp/framework": "1.2.*",
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}

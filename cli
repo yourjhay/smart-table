@@ -1,0 +1,11 @@
+<?php
+require __DIR__.'/vendor/autoload.php';
+
+use Simple\Engine\Console;
+
+$app = new Console($argc, $argv);
+$status = $app->consoleRun();
+
+$app->print_status();
+
+exit;
