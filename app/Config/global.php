@@ -2,7 +2,7 @@
 /**
  * Application Configuration Settings
  */
-define('APP_NAME','Simply PHP',true);
+define('APP_NAME','Smart Table',true);
 define('APP_DESCRIPTION','The "Simply-PHP" Framework',true);
 define('BASEURL','',true);
 define('APP_KEY', '');

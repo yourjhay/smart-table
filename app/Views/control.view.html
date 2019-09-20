@@ -1,0 +1,85 @@
+{% extends "layouts/base.view.html" %}
+
+{% block content %}
+
+   <div class="col-lg-12 mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        Control Panel
+                    </div>
+                    <div class="card-body">
+                        <button id="green" class="btn btn-success">GREEN</button>
+                    <button id="red" class="btn btn-danger">RED</button>
+                    <button id="yellow" class="btn btn-warning">YELLOW</button>
+                    <button id="temp" class="btn btn-primary">GET TEMPERATURE</button>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg">
+                <div class="card">
+                    <div class="card-header">
+                        Temperature
+                    </div>
+                    <div class="card-body">
+                       <table class="table table-bordered">
+                           <tr>
+                               <td>CPU</td>
+                               <td id="cpu_temp">READING TEMPERATURE</td>
+                           </tr>
+                           <tr>
+                                <td>GPU</td>
+                                <td id="gpu_temp">READING TEMPERATURE</td>
+                            </tr>
+                       </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+$(document).ready(function(){
+   $('#green').on('click', function(){
+       send('G');
+   });
+   $('#red').on('click', function(){
+       send('R');
+   });
+   $('#yellow').on('click', function(){
+       send('Y');
+   });
+   setInterval(temp,5000);
+});
+
+function temp(){
+    $.ajax({
+        url: 'http://localhost:8000/serial/temp',
+        method: 'POST',
+        success: function(e)
+        { 
+            var obj = JSON.parse(e);
+            $("#cpu_temp").html(obj.cpu);
+            $("#gpu_temp").html(obj.gpu);
+        }
+
+    });
+}
+function send(a){
+    $.ajax({
+        url: 'http://localhost:8000/serial/send',
+        method: 'POST',
+        data: {led:a},
+        success: function(e)
+        {
+            alert(e)
+        }
+    });
+}
+</script>
+{% endblock %}
