@@ -3,7 +3,7 @@
  * Application Configuration Settings
  */
 define('APP_NAME','Smart Table',true);
-define('APP_DESCRIPTION','The "Simply-PHP" Framework',true);
+define('APP_DESCRIPTION','A smart office working table',true);
 define('BASEURL','',true);
 define('APP_KEY', '');
 

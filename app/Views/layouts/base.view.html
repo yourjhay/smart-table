@@ -8,8 +8,9 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="/src/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/src/sweetalert/sweetalert2.min.css">
 
-  <title>Hello, world!</title>
+  <title>Hello, Desk!</title>
 </head>
 
 <body>
@@ -25,7 +26,13 @@
               <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" target="_blank" href="#">Weather</a>
+                <a class="nav-link" href="/weather/index">Weather</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/weather/index">My Schedules</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="/serial/index">Control Panel</a>
             </li>
           </ul>
         </div>
@@ -39,6 +46,7 @@
   <script src="/src/js/jquery.min.js"></script>
   <script src="/src/js/popper.min.js"></script>
   <script src="/src/js/bootstrap.min.js"></script>
+  <script src="/src/sweetalert/sweetalert2.min.js"></script>
   {% block script %}
 
   {% endblock %}

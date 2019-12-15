@@ -9,18 +9,17 @@
                     <div class="card-header">
                         Control Panel
                     </div>
-                    <div class="card-body">
-                        <button id="green" class="btn btn-success">GREEN</button>
-                    <button id="red" class="btn btn-danger">RED</button>
-                    <button id="yellow" class="btn btn-warning">YELLOW</button>
-                    <button id="temp" class="btn btn-primary">GET TEMPERATURE</button>
+                    <div class="card-body">                
+                    <button id="red" class="btn btn-danger">Wireless Charging</button>
+                    <button id="yellow" class="btn btn-warning">Lights</button>
+                    <button id="temp" class="btn btn-primary">Humidity and Temperature</button>
                         </div>
                 </div>
             </div>
             <div class="col-lg">
                 <div class="card">
                     <div class="card-header">
-                        Temperature
+                        System Status
                     </div>
                     <div class="card-body">
                        <table class="table table-bordered">
@@ -32,8 +31,29 @@
                                 <td>GPU</td>
                                 <td id="gpu_temp">READING TEMPERATURE</td>
                             </tr>
+                            <tr>
+                                <td>STATUS</td>
+                                <td id="stat_indicator">READING STATUS</td>
+                            </tr>
                        </table>
+                    </div>                    
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header">
+                        Room Temperature
                     </div>
+                    <div class="card-body">
+                       <table class="table table-bordered">
+                           <tr>
+                               <td>Humidity Level</td>
+                               <td id="cpu_temp">READING TEMPERATURE</td>
+                           </tr>
+                           <tr>
+                                <td>Temperature</td>
+                                <td id="gpu_temp">READING TEMPERATURE</td>
+                            </tr>
+                       </table>
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -46,15 +66,19 @@
 <script>
 $(document).ready(function(){
    $('#green').on('click', function(){
-       send('G');
+    send_com('G','Enable Bluetooth Speaker now?');
    });
    $('#red').on('click', function(){
-       send('R');
+    send_com('R','Enable the wireless charging now?');
    });
    $('#yellow').on('click', function(){
-       send('Y');
+    send_com('Y','Sample event?');
    });
-   setInterval(temp,5000);
+   $('#temp').on('click', function(){
+    get_temp();
+   });
+   setInterval(temp,10000);
+   
 });
 
 function temp(){
@@ -64,8 +88,25 @@ function temp(){
         success: function(e)
         { 
             var obj = JSON.parse(e);
-            $("#cpu_temp").html(obj.cpu);
+            $("#cpu_temp").html(obj.cpu + "'C");
             $("#gpu_temp").html(obj.gpu);
+
+            if(obj.cpu > 50 & obj.cpu < 60) {
+                $("#stat_indicator").css("background-color", "yellow"); 
+                $("#stat_indicator").css("color", "black");   
+                $("#stat_indicator").html("SYSTEM IS IN OPTIMUM LEVEL");        
+            } else if(obj.cpu > 60 && obj.cpu < 70){
+                $("#stat_indicator").css("background-color", "#bf5052");
+                $("#stat_indicator").css("color", "#ffffff");
+                $("#stat_indicator").html("CPU MIGHT OVERHEAT") 
+            } else if(obj.cpu > 40 && obj.cpu < 50){
+                $("#stat_indicator").css("background-color", "#5fc974");
+                $("#stat_indicator").html("SYSTEM IS NORMAL") 
+            } else if(obj.cpu > 70){
+                $("#stat_indicator").css("background-color", "#8a1d6d");
+                $("#stat_indicator").css("color", "#ffffff");
+                $("#stat_indicator").html("SYSTEM IS IN CRITICAL LEVEL") 
+            }
         }
 
     });
@@ -80,6 +121,127 @@ function send(a){
             alert(e)
         }
     });
+}
+
+function send_com(req,r_title)
+{
+    var headers = new Headers();
+
+headers.append('Accept', 'application/json'); // This one is enough for GET requests
+headers.append('Content-Type', 'application/json'); // This one sends body
+    Swal.fire({
+    title: r_title,
+    showCancelButton: true,
+    confirmButtonText: 'Turn On',
+    showLoaderOnConfirm: true,
+    preConfirm: (login) => {
+        return fetch(`http://localhost:8000/serial/send`, {
+            method: 'POST',
+            mode: 'same-origin',            
+            redirect: 'follow',
+            headers: headers,
+            body: JSON.stringify({
+                command: req,
+                led: req
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error(response.statusText)
+            }
+            return response.json()
+        })
+        .catch(error => {
+            Swal.showValidationMessage(
+            `Request failed: ${error}`
+            )
+        })
+        
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+    if (result.value) {
+        Swal.fire({
+        title: `${result.value.response}`,
+        })
+        
+        if(result.value.error != false) {
+            Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: `Something went wrong! ${result.value.response}`            
+            })
+        } else {
+            Swal.fire({
+            type: 'success',
+            title: result.value.response,
+            timer: 4000
+            })
+        }
+    }
+    })
+}
+
+
+function get_temp()
+{
+    var headers = new Headers();
+
+headers.append('Accept', 'application/json'); // This one is enough for GET requests
+headers.append('Content-Type', 'application/json'); // This one sends body
+    Swal.fire({
+    title: 'Show current humidity level and temperature',
+    showCancelButton: true,
+    confirmButtonText: 'Request',
+    showLoaderOnConfirm: true,
+    preConfirm: (login) => {
+        return fetch(`http://localhost:8000/serial/send`, {
+            method: 'POST',
+            mode: 'same-origin',            
+            redirect: 'follow',
+            headers: headers,
+            body: JSON.stringify({
+                command: 'H',
+                led: 'H'
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error(response.statusText)
+            }
+            return response.json()
+        })
+        .catch(error => {
+            Swal.showValidationMessage(
+            `Request failed: ${error}`
+            )
+        })
+        
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+    if (result.value) {
+        Swal.fire({
+        title: `${result.value.response}`,
+        })
+        
+        if(result.value.error != false) {
+            Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: `Something went wrong! ${result.value.response}`            
+            })
+        } else {
+            var resp = result.value.response;
+            var dt = resp.split(" ");
+            Swal.fire({
+            type: 'success',
+            title: 'Humidity Level: ' + dt[0] + '%' + ' Temperature: ' + dt[1] + '\'C',
+            timer: 5000
+            })
+        }
+    }
+    })
 }
 </script>
 {% endblock %}

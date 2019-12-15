@@ -14,7 +14,9 @@ class SerialController extends Controller
 
     public function send(Request $request)
     {
-        $led = $request->led;
+        $json = file_get_contents('php://input');
+        $data = json_decode($json);
+        //$led = $request->post('');
         $serial = new PhpSerial;
         // First we must specify the device. This works on both linux and windows (if
         // your linux serial device is /dev/ttyS0 for COM1, etc)
@@ -32,11 +34,15 @@ class SerialController extends Controller
         $serial->deviceOpen();
 
         // To write into
-        $serial->sendMessage(trim($led),1); 
+        $serial->sendMessage(trim($data->led),1); 
             
-        echo "response: " . $serial->readPort();
-       
+        $read = $serial->readPort();
+        $res = array(
+            "response" => $read == "" ? "NO RESPONSE FROM DEVICE" : $read,
+            "error" => $read == "" ? "NO RESPONSE FROM DEVICE: " . $read : false
+        );
 
+        return json_encode($res);
     }
 
     public function manual()
@@ -58,7 +64,7 @@ class SerialController extends Controller
 
         sleep(3);
         // To write into
-        $serial->sendMessage(trim("G")); 
+        $serial->sendMessage(trim("G"),1); 
             
         echo "response: " . $serial->readPort();
     }
@@ -71,7 +77,7 @@ class SerialController extends Controller
         //$mem = shell_exec("free -m");
         //dd($mem);
         $data = array(
-            'cpu' => number_format($r / 1000,'2', '.','') . '\'C',
+            'cpu' => number_format($r / 1000,'2', '.',''),
             'gpu' => trim($gputemp[1])
         );
         return json_encode($data);

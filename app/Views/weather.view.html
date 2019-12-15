@@ -1,0 +1,75 @@
+{% extends "layouts/base.view.html" %}
+
+{% block content %}
+
+   <div class="col-lg-12 mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        Philippine Satellite Weather - DOST PAGASA HIMARAWI
+                    </div>
+                    <div class="card-body">
+                    <img class="img image-responsive" width="100%" src="http://121.58.193.148/repo/mtsat-colored/24hour/latest-him-colored-hourly.gif">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg">
+                <div class="card">
+                    <div class="card-header">
+                        System Temperature
+                    </div>
+                    <div class="card-body">
+                       <table class="table table-bordered">
+                           <tr>
+                               <td>CPU</td>
+                               <td id="cpu_temp">READING TEMPERATURE</td>
+                           </tr>
+                           <tr>
+                                <td>GPU</td>
+                                <td id="gpu_temp">READING TEMPERATURE</td>
+                            </tr>
+                       </table>
+                    </div>
+                </div>
+                <div class="card mt-1">
+                    <div class="card-header">
+                        Current Weather
+                    </div>
+                    <div class="card-body">
+                       <b>Location: </b>{{ data.name }} <br>
+                       <b>Temperature: </b>{{ temp }} °C<br>
+                       <b>Clouds: </b>{{ data.weather.0.description }} <br>
+                       <b>Humidity Level: </b>{{ data.main.humidity }} %<br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+
+{% endblock %}
+{% block script %}
+<script>
+$(document).ready(function(){
+
+   setInterval(temp,10000);
+   
+});
+
+function temp(){
+    $.ajax({
+        url: 'http://localhost:8000/serial/temp',
+        method: 'POST',
+        success: function(e)
+        { 
+            var obj = JSON.parse(e);
+            $("#cpu_temp").html(obj.cpu);
+            $("#gpu_temp").html(obj.gpu);
+        }
+
+    });
+}
+
+</script>
+{% endblock %}
