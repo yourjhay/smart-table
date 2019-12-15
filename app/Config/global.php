@@ -32,6 +32,6 @@ define('CACHE_VIEWS', false , true);
  */
 define('DBENGINE','mysql');
 define('DBSERVER', 'localhost',true);
-define('DBUSER', 'root', true);
-define('DBPASS', '', true);
+define('DBUSER', 'jhay', true);
+define('DBPASS', 'passmein07', true);
 define('DBNAME','smart-table', true);

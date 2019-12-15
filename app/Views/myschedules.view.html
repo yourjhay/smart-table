@@ -87,7 +87,24 @@ $(document).ready(function () {
             }
             calendar.fullCalendar('unselect');
         },
-        
+        eventClick:function(event)
+            {
+            if(confirm("Are you sure you want to remove it?"))
+            {
+            var id = event.id;
+            $.ajax({
+            url:"/myschedule/delete",
+            type:"POST",
+            data:{id:id},
+            success:function()
+            {
+                calendar.fullCalendar('refetchEvents');
+                alert("Event Removed");
+            }
+            })
+            }
+        },
+
         editable: true,
         eventDrop: function (event, delta) {
                     var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
