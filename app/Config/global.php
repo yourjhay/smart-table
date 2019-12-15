@@ -34,4 +34,4 @@ define('DBENGINE','mysql');
 define('DBSERVER', 'localhost',true);
 define('DBUSER', 'root', true);
 define('DBPASS', '', true);
-define('DBNAME','simply', true);
+define('DBNAME','smart-table', true);
