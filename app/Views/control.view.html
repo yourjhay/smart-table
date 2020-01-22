@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body">                
                     <button id="red" class="btn btn-danger">Wireless Charging</button>
-                    <button id="yellow" class="btn btn-warning">Lights</button>
+                    <button id="yellow" class="btn btn-warning">Table Lights</button>
                     <button id="temp" class="btn btn-primary">Humidity and Temperature</button>
                         </div>
                 </div>
@@ -46,11 +46,11 @@
                        <table class="table table-bordered">
                            <tr>
                                <td>Humidity Level</td>
-                               <td id="cpu_temp">READING TEMPERATURE</td>
+                               <td id="hum_temp">READING TEMPERATURE</td>
                            </tr>
                            <tr>
                                 <td>Temperature</td>
-                                <td id="gpu_temp">READING TEMPERATURE</td>
+                                <td id="room_temp">READING TEMPERATURE</td>
                             </tr>
                        </table>
                     </div>                    
@@ -72,7 +72,7 @@ $(document).ready(function(){
     send_com('R','Enable the wireless charging now?');
    });
    $('#yellow').on('click', function(){
-    send_com('Y','Sample event?');
+    send_com('Y','Turn on lights?');
    });
    $('#temp').on('click', function(){
     get_temp();
@@ -239,6 +239,8 @@ headers.append('Content-Type', 'application/json'); // This one sends body
             title: 'Humidity Level: ' + dt[0] + '%' + ' Temperature: ' + dt[1] + '\'C',
             timer: 5000
             })
+            $("#hum_temp").html(dt[0] + ' %');
+            $("#room_temp").html(dt[1] + ' C');
         }
     }
     })

@@ -9,7 +9,10 @@ class MyschedulesController extends Controller
     
     public function index() 
     {
-        return view('myschedules');
+        $events_today = Events::current();
+        return view('myschedules',[
+            'events' => $events_today
+        ]);
     }
 
     public function events() 
@@ -43,7 +46,13 @@ class MyschedulesController extends Controller
         $event->start_event = $request->start;
         $event->end_event = $request->end;
         $event->save();
+    }
 
+    public function delete(Request $request)
+    {
+        $event = Events::delete($request->id);
+       
+        return "1";
     }
     
 }

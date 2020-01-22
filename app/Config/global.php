@@ -2,6 +2,7 @@
 /**
  * Application Configuration Settings
  */
+date_default_timezone_set("Asia/Manila");
 define('APP_NAME','Smart Table',true);
 define('APP_DESCRIPTION','A smart office working table',true);
 define('BASEURL','',true);
