@@ -7,7 +7,7 @@ Use App\Models\Events;
 class MyschedulesController extends Controller 
 {
     
-    public function index() 
+    public function indexAction() 
     {
         $events_today = Events::current();
         return view('myschedules',[

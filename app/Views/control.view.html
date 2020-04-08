@@ -10,10 +10,18 @@
                         Control Panel
                     </div>
                     <div class="card-body">                
-                    <button id="red" class="btn btn-danger">Wireless Charging</button>
+                    <button id="red" class="btn btn-danger">Activate wireless charging</button>
+                    <button id="red2" class="btn btn-danger">Deactivate wireless charging</button> 
+                    <br><br>
                     <button id="yellow" class="btn btn-warning">Table Lights</button>
-                    <button id="temp" class="btn btn-primary">Humidity and Temperature</button>
-                        </div>
+                    <button id="yellow2" class="btn btn-warning">Table Lights off</button>
+                    <br><br>
+                    <button id="temp" class="btn btn-primary mt-2">Humidity and Temperature</button> 
+                    <button id="drawer" class="btn btn-primary mt-2">Unlock Drawer</button>
+                    <br><br>
+                    <button id="sos" class="btn btn-danger">ACTIVATE EMERGENCY SOS</button>
+                    <button id="sos2" class="btn btn-danger">DEACTIVATE EMERGENCY SOS</button>
+                </div>
                 </div>
             </div>
             <div class="col-lg">
@@ -71,11 +79,26 @@ $(document).ready(function(){
    $('#red').on('click', function(){
     send_com('R','Enable the wireless charging now?');
    });
+   $('#red2').on('click', function(){
+    send_com('r','Disable the wireless charging now?');
+   });
    $('#yellow').on('click', function(){
-    send_com('Y','Turn on lights?');
+    send_com('L','Turn on lights?');
+   });
+   $('#yellow2').on('click', function(){
+    send_com('l','Turn off lights?');
+   });
+   $('#sos').on('click', function(){
+    send_com('S','This will activate SOS light effect?');
+   });
+   $('#sos2').on('click', function(){
+    send_com('s','This will deactivate SOS light effect?');
    });
    $('#temp').on('click', function(){
     get_temp();
+   });
+   $('#drawer').on('click', function(){
+    send_com('d','The drawer will auto lock after 5 seconds. Proceed?');
    });
    setInterval(temp,10000);
    
@@ -83,7 +106,7 @@ $(document).ready(function(){
 
 function temp(){
     $.ajax({
-        url: 'http://localhost:8000/serial/temp',
+        url: 'http://smart_table.site/serial/temp',
         method: 'POST',
         success: function(e)
         { 
@@ -113,7 +136,7 @@ function temp(){
 }
 function send(a){
     $.ajax({
-        url: 'http://localhost:8000/serial/send',
+        url: 'http://smart_table.site/serial/send',
         method: 'POST',
         data: {led:a},
         success: function(e)
@@ -132,10 +155,10 @@ headers.append('Content-Type', 'application/json'); // This one sends body
     Swal.fire({
     title: r_title,
     showCancelButton: true,
-    confirmButtonText: 'Turn On',
+    confirmButtonText: 'Confirm',
     showLoaderOnConfirm: true,
     preConfirm: (login) => {
-        return fetch(`http://localhost:8000/serial/send`, {
+        return fetch(`http://smart_table.site/serial/send`, {
             method: 'POST',
             mode: 'same-origin',            
             redirect: 'follow',
@@ -167,9 +190,9 @@ headers.append('Content-Type', 'application/json'); // This one sends body
         
         if(result.value.error != false) {
             Swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: `Something went wrong! ${result.value.response}`            
+            type: 'success',
+            title: 'Oops.',
+            text: `Command received, but no response! ${result.value.response}`            
             })
         } else {
             Swal.fire({
@@ -195,7 +218,7 @@ headers.append('Content-Type', 'application/json'); // This one sends body
     confirmButtonText: 'Request',
     showLoaderOnConfirm: true,
     preConfirm: (login) => {
-        return fetch(`http://localhost:8000/serial/send`, {
+        return fetch(`http://smart_table.site/serial/send`, {
             method: 'POST',
             mode: 'same-origin',            
             redirect: 'follow',

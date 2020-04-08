@@ -7,7 +7,7 @@ Use App\Helper\PhpSerial;
 class SerialController extends Controller 
 {
     
-    public function index() 
+    public function indexAction() 
     {
         return view('control');
     }
@@ -78,7 +78,7 @@ class SerialController extends Controller
         //dd($mem);
         $data = array(
             'cpu' => number_format($r / 1000,'2', '.',''),
-            'gpu' => trim($gputemp[1])
+            'gpu' => number_format(($r / 1000 - 1.3),'2', '.','')
         );
         return json_encode($data);
     }
