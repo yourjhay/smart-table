@@ -1,0 +1,31 @@
+body{
+    background-color: #343a40!important;
+}
+
+.header {
+    margin-top:1em;
+    color: #0077ff!important;
+    text-shadow: 0 0 10px #fff, 0 0 20px #80ceff, 0 0 20px #80ceff, 0 0 30px #80ceff, 0 0 40px #80ceff, 0 0 50px #80ceff, 0 0 60px #80ceff;
+}
+
+.app_icon {
+    margin-right:20px;
+    margin-left:20px;
+}
+
+.app-card, .card, .modal-body {
+    background-color: #637680;
+    color: #40f2ff;
+}
+
+.card-body {
+    color: #fff!important;
+}
+.figure-caption{
+    color: white;
+}
+
+#calendar {
+    background-color: #637680;
+    border-radius: 5px;
+}
