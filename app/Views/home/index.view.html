@@ -12,6 +12,74 @@
 <div class="d-flex justify-content-center">
         <div class="header py-5">{{ name }}</div>
 </div>
-<p class="text-center"><em>{{ description }}</em></p>
-
+<p class="text-center text-light"><em>{{ description }}</em></p>
+<div class="card col-9 pt-3 m-auto align-items-center app-card">
+    <div class="card-body">
+        <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
+            <figure class="figure">
+                <img src="/icons/appdrawer.png" alt="..." class="img-thumbnail app_icon">
+                <figcaption class="figure-caption text-center">Applications</figcaption>
+            </figure>
+        </a>
+       <figure class="figure">
+        <img src="/icons/icons8-partly-cloudy-day-80.png" alt="..." class="img-thumbnail app_icon">
+        <figcaption class="figure-caption text-center">myWeather</figcaption>
+       </figure>
+       <figure class="figure">
+        <img src="/icons/icons8-calendar-80.png" alt="..." class="img-thumbnail app_icon">
+        <figcaption class="figure-caption text-center">mySchedules</figcaption>
+       </figure>
+       <figure class="figure">
+        <img src="/icons/icons8-energy-meter-80.png" alt="..." class="img-thumbnail app_icon">
+        <figcaption class="figure-caption text-center">myTable</figcaption>
+       </figure>
+       <figure class="figure">
+        <img src="/icons/icons8-exit-80.png" alt="..." class="img-thumbnail app_icon">
+        <figcaption class="figure-caption text-center">Logout</figcaption>
+       </figure>
+    </div>
+</div>
+<div class="card mt-2 col-9 m-auto">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Today Schedules</div>
+                    <div class="card-body">
+                        {% for e in events %}                             
+                        <div class="alert alert-primary"><strong>{{ e.title }}</strong>
+                            <br> <small>Today {{ e.start_event|date(" \\a\\t g:ia")}} to {{ e.end_event|date("g:ia")}}</small>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-success">No Schedules for today.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Notifications</div>
+                    <div class="card-body">
+                        <div class="alert alert-primary">You're all set!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">APPLICATIONS</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

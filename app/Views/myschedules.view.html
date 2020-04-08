@@ -33,7 +33,7 @@
                       
                        {% for e in events %}                             
                         <div class="alert alert-primary"><strong>{{ e.title }}</strong>
-                            <br> <small>Today {{ e.start_event|date(" \\a\\t g:ia")}} to {{ e.start_event|date("g:ia")}}</small>
+                            <br> <small>Today {{ e.start_event|date(" \\a\\t g:ia")}} to {{ e.end_event|date("g:ia")}}</small>
                         </div>
                         {% else %}
                         <div class="alert alert-success">No Schedules for today.</div>
